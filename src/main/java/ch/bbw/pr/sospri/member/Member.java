@@ -14,10 +14,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
- * A chat-member
+ * Member
  *
- * @author Peter Rutschmann
- * @version 15.03.2023
+ * @author Nico Menzi
+ * @version 06.04.2023
  */
 @Entity
 @Table(name = "member")

@@ -6,9 +6,9 @@ import java.util.Optional;
 
 /**
  * MemberRepository
- * 
- * @author Peter Rutschmann
- * @version 15.03.2023
+ *
+ * @author Nico Menzi
+ * @version 06.04.2023
  */
                                                        //Klasse, id-Typ
 public interface MemberRepository extends CrudRepository<Member, Long>{

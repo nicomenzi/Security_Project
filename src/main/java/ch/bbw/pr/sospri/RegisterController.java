@@ -2,6 +2,8 @@ package ch.bbw.pr.sospri;
 
 import ch.bbw.pr.sospri.member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +17,8 @@ import java.util.Objects;
 /**
  * RegisterController
  *
- * @author Peter Rutschmann
- * @version 15.03.2023
+ * @author Nico Menzi
+ * @version 06.04.2023
  */
 @Controller
 public class RegisterController {
@@ -30,6 +32,14 @@ public class RegisterController {
       return "register";
    }
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        return "login";
+    }
+    @GetMapping("/logout")
+    public String logout(Model model) {
+        return "logout";
+    }
    @PostMapping("/get-register")
    public String postRequestRegistMembers(RegisterMember registerMember, Model model) {
       System.out.println("postRequestRegistMembers: registerMember");
@@ -44,21 +54,31 @@ public class RegisterController {
             model.addAttribute("error", "Username already exists");
             return "register";
          }
-         // check password with regex ^(?=.*\d)(?=.*[!@#$%^&*()])(?=.*[A-Z]).{8,}$
          if (!registerMember.getPassword().matches("^(?=.*\\d)(?=.*[!@#$%^&*()])(?=.*[A-Z]).{8,}$")) {
             model.addAttribute("registerMember", registerMember);
             model.addAttribute("error", "Password must contain at least 8 characters, one uppercase letter, one number and one special character");
             return "register";
          }
          Member member = new Member();
-         member.setPassword(registerMember.getPassword());
+         //int strength = registerMember.getPassword().length() > 10 ? 12 : 10;
+         //BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new java.security.SecureRandom());
+         //String hashedPassword = bCryptPasswordEncoder.encode(registerMember.getPassword());
+
+         String pepper = "sospri";
+         int iterations = 1000;
+         int hashWidth = 256;
+         Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder(pepper, iterations, hashWidth);
+         pbkdf2PasswordEncoder.setEncodeHashAsBase64(true);
+         String hashedPassword = pbkdf2PasswordEncoder.encode(registerMember.getPassword());
+         member.setPassword(hashedPassword);
          member.setPrename(registerMember.getPrename());
          member.setLastname(registerMember.getLastname());
          //set username prename.lastname lowercase and check if username already exists
          member.setUsername(registerMember.getPrename().toLowerCase() + "." + registerMember.getLastname().toLowerCase());
-         member.setAuthority("ROLE_USER");
+         member.setAuthority("member");
 
          memberservice.add(member);
+         model.addAttribute("username", member.getUsername());
          return "registerconfirmed";
       }
       else {

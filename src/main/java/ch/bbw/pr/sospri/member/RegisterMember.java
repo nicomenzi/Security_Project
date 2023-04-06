@@ -5,10 +5,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * To regist a new Member
+ * RegisterMember
  *
- * @author Peter Rutschmann
- * @version 15.03.2023
+ * @author Nico Menzi
+ * @version 06.04.2023
  */
 @Getter
 @Setter

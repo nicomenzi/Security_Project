@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 /**
  * MessageService
  *
- * @author Peter Rutschmann
- * @version 15.03.2023
+ * @author Nico Menzi
+ * @version 06.04.2023
  */
 @Service
 public class MessageService {

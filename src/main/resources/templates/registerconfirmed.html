@@ -27,7 +27,10 @@
           <div>
             <h4 style="margin-top: 30px">Register confirmation</h4>
 
-            <!-- hier ergänzen -->
+            <div th:if="${username}">
+                <p>Thank you for registering. Your username is:</p>
+              <p th:text="${username}"></p>
+            </div>
 
           </div>
         </div>

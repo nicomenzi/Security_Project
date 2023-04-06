@@ -17,10 +17,10 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * A chat message
+ * Message
  *
- * @author Peter Rutschmann
- * @version 15.03.2023
+ * @author Nico Menzi
+ * @version 06.04.2023
  */
 @Entity
 @Table(name = "message")
