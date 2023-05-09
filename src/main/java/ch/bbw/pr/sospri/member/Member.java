@@ -31,11 +31,11 @@ public class Member {
    private Long id;
 
    @NotEmpty(message = "prename may not be empty")
-   @Size(min = 2, max = 512, message = "Die Länge des Vornamens muss 2 bis 25 Zeichen sein.")
+   @Size(min = 2, max = 25, message = "Die Länge des Vornamens muss 2 bis 25 Zeichen sein.")
    private String prename;
 
    @NotEmpty(message = "lastname may not be empty")
-   @Size(min = 2, max = 20, message = "Die Länge des Nachnamens 2 bis 25 Zeichen sein.")
+   @Size(min = 2, max = 25, message = "Die Länge des Nachnamens 2 bis 25 Zeichen sein.")
    private String lastname;
 
    private String password;

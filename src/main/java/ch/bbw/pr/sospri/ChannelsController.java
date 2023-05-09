@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -25,38 +28,40 @@ import ch.bbw.pr.sospri.message.MessageService;
  * @version 06.04.2023
  */
 @Controller
+@Log4j2
 public class ChannelsController {
+   Logger logger = LoggerFactory.getLogger(ChannelsController.class);
    @Autowired
    MessageService messageservice;
    @Autowired
    MemberService memberservice;
 
+
+
    @GetMapping("/get-channel")
    public String getRequestChannel(Model model) {
-      System.out.println("getRequestChannel");
+      logger.info("getRequestChannel");
       model.addAttribute("messages", messageservice.getAll());
 
       Message message = new Message();
       message.setContent("Der zweite Pfeil trifft immer.");
-      System.out.println("message: " + message);
+      logger.info("message: " + message);
       model.addAttribute("message", message);
       return "channel";
    }
 
    @PostMapping("/add-message")
    public String postRequestChannel(Model model, @ModelAttribute @Valid Message message, BindingResult bindingResult, Authentication authentication) {
-      System.out.println("postRequestChannel(): message: " + message.toString());
+      logger.info("postRequestChannel(): message: " + message.toString());
       if (bindingResult.hasErrors()) {
-         System.out.println("postRequestChannel(): has Error(s): " + bindingResult.getErrorCount());
          model.addAttribute("messages", messageservice.getAll());
+         logger.info("postRequestChannel(): has Error(s): " + bindingResult.getErrorCount());
          return "channel";
       }
       // Hack solange es kein authenticated member hat
       String currentName = authentication.getName();
       String currentUserName = currentName.toLowerCase().replace(" ", ".");
       Member member = memberservice.getByUserName(currentUserName);
-      System.out.println(authentication.getName() );
-      System.out.println(member);
       if (member != null) {
          message. setAuthor (member.getPrename() + " " + member.getLastname() );
       }
@@ -66,6 +71,8 @@ public class ChannelsController {
 
       message.setOrigin(new Date());
       messageservice.add(message);
+      logger.info("postRequestChannel(): message: " + message.toString());
+      logger.info("postRequestChannel(): message added by " + message.getAuthor());
 
 
       return "redirect:/get-channel";

@@ -15,7 +15,6 @@ public class MemberToUserDetailsMapper {
         User user = null;
 
         if(member!=null){
-            System.out.println("MemberToUserDetailsMapper: member != null");
 
             java.util.Collection<MemberGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new MemberGrantedAuthority(member.getAuthority()));

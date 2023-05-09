@@ -71,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/*").permitAll()
                 .antMatchers("/get-channel").hasAnyAuthority("admin", "supervisor", "member")
                 .antMatchers("/get-register").permitAll()
+                .antMatchers("/actuator/prometheus").permitAll()
                 .antMatchers("/get-members").hasAuthority("admin")
                 .antMatchers(("/edit-members")).hasAuthority("admin")
                 .anyRequest().authenticated()
